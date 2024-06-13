@@ -1,0 +1,34 @@
+name: Pruebas unitarias Ingredientes
+on:
+  push:
+    branches: [ HU-AI01, AI02, AI03 ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout de repositorio
+      uses: actions/checkout@v2
+
+    - name: Configuración de entorno de python
+      uses: actions/setup-python@v2
+      with:
+          python-version: '3.9'
+
+    - uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip
+
+    - run: pip install faker
+      shell: bash
+
+    - run: pip install coverage==5.5
+      shell: bash
+
+    - run: pip install SQLAlchemy==1.4.15
+      shell: bash
+
+    - name: Ejecutar Pruebas
+      id: ejecutar-pruebas
+      run: python -m unittest -v tests/text_ingredientes.py

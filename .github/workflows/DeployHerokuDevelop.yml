@@ -1,0 +1,24 @@
+name: Despliegue Heroku Develop
+on:
+  push:
+    branches: [ develop ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout de repositorio
+      uses: actions/checkout@v2
+
+    - name: Configuración de entorno de python
+      uses: actions/setup-python@v2
+      with:
+          python-version: '3.9'
+
+    - uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip
+
+    - run: pip install -r requirements.txt
+      shell: bash

@@ -25,11 +25,9 @@ app_context = app.app_context()
 app_context.push()
 
 db.init_app(app)
-print("PRUEBA 1")
 db.drop_all()
 db.session.commit()
 db.create_all()
-print("PRUEBA 2")
 
 cors = CORS(app)
 

@@ -1,8 +1,10 @@
+import os
 from flask import Flask
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flask_restful import Api
 from modelos import db
+from typing import Optional, AsyncGenerator
 from vistas import (
     VistaIngrediente, VistaIngredientes,
     VistaReceta, VistaRecetas, VistaMenus, VistaModificarMenus, 
@@ -13,7 +15,7 @@ from vistas import (
     VistaHorario, VistaChefs, VistaCompras
 )
 
-DATABASE_URL = "postgresql://myuser:mypassword@db:5432/mydatabase"
+DATABASE_URL: Optional[str] = os.getenv("DATABASE_URL", "postgres://postgres:postgres@db:5432/postgres")
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL

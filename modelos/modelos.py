@@ -7,8 +7,8 @@ db = SQLAlchemy()
 class RecetaIngrediente(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     cantidad = db.Column(db.Numeric)
-    ingrediente = db.Column(db.Integer, db.ForeignKey('ingrediente.id'))
-    receta = db.Column(db.Integer, db.ForeignKey('receta.id'))
+    ingrediente = db.Column(db.Integer, db.ForeignKey("ingrediente.id"))
+    receta = db.Column(db.Integer, db.ForeignKey("receta.id"))
 
 class Ingrediente(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -17,49 +17,49 @@ class Ingrediente(db.Model):
     costo = db.Column(db.Numeric)
     calorias = db.Column(db.Numeric)
     sitio = db.Column(db.String(128))
-    restaurante = db.Column(db.Integer, db.ForeignKey('restaurante.id'))
+    restaurante = db.Column(db.Integer, db.ForeignKey("restaurante.id"))
 
 class Receta(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(128))
     duracion = db.Column(db.Numeric)
     preparacion = db.Column(db.String)
-    ingredientes = db.relationship('RecetaIngrediente', cascade='all, delete, delete-orphan')
-    usuario = db.Column(db.Integer, db.ForeignKey('usuario.id'))
-    menu = db.Column(db.Integer, db.ForeignKey('menu.id'))
+    ingredientes = db.relationship("RecetaIngrediente", cascade="all, delete, delete-orphan")
+    usuario = db.Column(db.Integer, db.ForeignKey("usuario.id"))
+    menu = db.Column(db.Integer, db.ForeignKey("menu.id"))
     porcion = db.Column(db.String)
 
 class MenuReceta(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    id_menu = db.Column(db.Integer, db.ForeignKey('menu.id'))
+    id_menu = db.Column(db.Integer, db.ForeignKey("menu.id"))
     porcion = db.Column(db.Integer)
-    id_receta = db.Column(db.Integer, db.ForeignKey('receta.id'))
+    id_receta = db.Column(db.Integer, db.ForeignKey("receta.id"))
 
 class Menu(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(128))
     fechainicio = db.Column(db.String(20))
     fechafinal = db.Column(db.String(20))
-    recetas = db.relationship('MenuReceta', cascade='all, delete, delete-orphan')
-    usuario = db.Column(db.Integer, db.ForeignKey('usuario.id'))
-    restaurante = db.Column(db.Integer, db.ForeignKey('restaurante.id')) 
+    recetas = db.relationship("MenuReceta", cascade="all, delete, delete-orphan")
+    usuario = db.Column(db.Integer, db.ForeignKey("usuario.id"))
+    restaurante = db.Column(db.Integer, db.ForeignKey("restaurante.id")) 
 
 class AplicacionMovil(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(500))
-    restaurante = db.Column(db.Integer, db.ForeignKey('restaurante.id'))
+    restaurante = db.Column(db.Integer, db.ForeignKey("restaurante.id"))
 
 class Horario(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     dia_apertura = db.Column(db.String(10))
     hora_inicio = db.Column(db.String(5))
     hora_fin = db.Column(db.String(5))
-    restaurante = db.Column(db.Integer, db.ForeignKey('restaurante.id'))
+    restaurante = db.Column(db.Integer, db.ForeignKey("restaurante.id"))
 
 class RedSocial(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(500))
-    restaurante = db.Column(db.Integer, db.ForeignKey('restaurante.id'))
+    restaurante = db.Column(db.Integer, db.ForeignKey("restaurante.id"))
 
 class Restaurante(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -72,18 +72,18 @@ class Restaurante(db.Model):
 
 class RestauranteIngrediente(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    ingrediente = db.Column(db.Integer, db.ForeignKey('ingrediente.id'))
-    restaurante = db.Column(db.Integer, db.ForeignKey('restaurante.id'))
+    ingrediente = db.Column(db.Integer, db.ForeignKey("ingrediente.id"))
+    restaurante = db.Column(db.Integer, db.ForeignKey("restaurante.id"))
 
 class RestauranteReceta(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    receta = db.Column(db.Integer, db.ForeignKey('receta.id'))
-    restaurante = db.Column(db.Integer, db.ForeignKey('restaurante.id'))
+    receta = db.Column(db.Integer, db.ForeignKey("receta.id"))
+    restaurante = db.Column(db.Integer, db.ForeignKey("restaurante.id"))
 
 class UsuarioRestaurante(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    usuario = db.Column(db.Integer, db.ForeignKey('usuario.id'))
-    restaurante = db.Column(db.Integer, db.ForeignKey('restaurante.id'))
+    usuario = db.Column(db.Integer, db.ForeignKey("usuario.id"))
+    restaurante = db.Column(db.Integer, db.ForeignKey("restaurante.id"))
 
 class Usuario(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -91,7 +91,7 @@ class Usuario(db.Model):
     nombre = db.Column(db.String(50))
     contrasena = db.Column(db.String(50))
     rol = db.Column(db.String(50))
-    recetas = db.relationship('Receta', cascade='all, delete, delete-orphan')
+    recetas = db.relationship("Receta", cascade="all, delete, delete-orphan")
 
 class IngredienteSchema(SQLAlchemyAutoSchema):
     class Meta:

@@ -7,6 +7,7 @@ networks:
 services:
   db:
     image: postgres:14-alpine
+    container_name: misw4410-db
     ports:
       - 5432:5432
     volumes:
@@ -22,6 +23,7 @@ services:
     build: 
       context: .
       dockerfile: Dockerfile
+    container_name: misw4410-app
     ports:
       - 5000:5000
     environment:
@@ -30,3 +32,4 @@ services:
       - db
     networks:
       - misw4410-network
+    command: ["dockerize", "-wait", "tcp://db:5432", "-timeout", "30s", "python", "app.py"]

@@ -26,22 +26,22 @@ def ping():
   return "pong"
 
 def createDefaultUser():
-  with app.app_context():
-    if not Usuario.query.first():
-      default_user = Usuario(
-        usuario="admin",
-        nombre="Administrador",
-        contrasena="recetario2024*",
-        rol="admin"
-      )
-      db.session.add(default_user)
-      db.session.commit()
-      print("USUARIO CREADO")
+  if not Usuario.query.first():
+    default_user = Usuario(
+      usuario="admin",
+      nombre="Administrador",
+      contrasena="recetario2024*",
+      rol="admin"
+    )
+    db.session.add(default_user)
+    db.session.commit()
+    print("USUARIO CREADO")
 
 if __name__ == "__main__":
-  db.drop_all()
-  db.create_all()
-  createDefaultUser()
+  with app.app_context():
+    db.drop_all()
+    db.create_all()
+    createDefaultUser()
   app.run(host="0.0.0.0")
   cors = CORS(app)
   jwt = JWTManager(app)

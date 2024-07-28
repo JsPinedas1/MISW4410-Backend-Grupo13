@@ -1,4 +1,4 @@
-service: zero-galileo
+service: misw4410-app
 frameworkVersion: "3"
 
 params:

@@ -1,0 +1,69 @@
+service: zero-galileo
+frameworkVersion: "3"
+
+params:
+  dev:
+    region: us-east-2
+    iamrole: "arn:aws:iam::641955663261:role/service-role/readS3-role-imp1e1ps"
+    subnetId1: "subnet-0bdeeb0568370e36c"
+    subnetId2: "subnet-0d03d0e417ccac4e2"
+    securityGroupId: "sg-0aaf7e453e9cd5fa1"
+    layerPg: "arn:aws:lambda:us-east-2:641955663261:layer:pg:1"
+    layerPinoPretty: "arn:aws:lambda:us-east-2:641955663261:layer:pino-pretty:1"
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  stage: ${opt:stage, 'dev'}
+  region: ${param:region}
+  vpc:
+    securityGroupIds:
+      - ${param:securityGroupId}
+    subnetIds:
+      - ${param:subnetId1}
+      - ${param:subnetId2}
+  tags:
+    Ambiente: ${opt:stage, 'dev'}
+    Creador: "Hector.Gomez"
+    Modificador: ""
+    Proyecto: "Zero"
+
+package:
+  patterns:
+    - "!node_modules/**"
+
+layers:
+  nodeModules:
+    path: layer/nodejs
+    compatibleRuntimes:
+      - nodejs16.x
+    compatibleArchitectures:
+      - x86_64
+      - arm64
+
+functions:
+  app:
+    handler: dist/app.handler
+    layers:
+      - { Ref: NodeModulesLambdaLayer }
+      - ${param:layerPg}
+      - ${param:layerPinoPretty}
+    events:
+      - http:
+          path: /{proxy+}
+          method: ANY
+    timeout: 30
+    role: ${param:iamrole}
+
+plugins:
+  - serverless-offline
+  - serverless-dotenv-plugin
+  - serverless-plugin-common-excludes
+  - serverless-plugin-include-dependencies
+
+custom:
+  serverless-offline:
+    noPrependStageInUrl: true
+    httpPort: 4010
+    websocketPort: 4011
+    lambdaPort: 4012

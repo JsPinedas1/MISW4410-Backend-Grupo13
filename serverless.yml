@@ -13,7 +13,7 @@ params:
 
 provider:
   name: aws
-  runtime: nodejs16.x
+  runtime: python:3.9
   stage: ${opt:stage, 'dev'}
   region: ${param:region}
   vpc:
@@ -24,30 +24,13 @@ provider:
       - ${param:subnetId2}
   tags:
     Ambiente: ${opt:stage, 'dev'}
-    Creador: "Hector.Gomez"
+    Creador: "js.pinedas1@uniandes.edu.co"
     Modificador: ""
-    Proyecto: "Zero"
-
-package:
-  patterns:
-    - "!node_modules/**"
-
-layers:
-  nodeModules:
-    path: layer/nodejs
-    compatibleRuntimes:
-      - nodejs16.x
-    compatibleArchitectures:
-      - x86_64
-      - arm64
+    Proyecto: "Modernizacion"
 
 functions:
   app:
     handler: dist/app.handler
-    layers:
-      - { Ref: NodeModulesLambdaLayer }
-      - ${param:layerPg}
-      - ${param:layerPinoPretty}
     events:
       - http:
           path: /{proxy+}
